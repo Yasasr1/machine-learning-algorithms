@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score
 def load_data(data_file_path):
     # using breast cancer WIS consin dataset
     data = pd.read_csv(data_file_path,
-                       usecols=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10] ,
+                       usecols=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                        names=["clump_thickness", "uniformity_of_cell_size", "uniformity_of_cell_shape",
                               "marginal_adhesion", "single_epi_cell_size", "bare_nuclei", "bland_chro",
                               "normal_nucleoli", "mitoses", "class"])
@@ -21,18 +21,18 @@ def load_data(data_file_path):
     # add 1 as b(intercept) value for every Xi'th row
     x.insert(loc=len(x.columns), column='b', value=1)
     # split into training and testing sets
-    x_train, x_test, y_train, y_test = tts(x, y, test_size=1/3)
+    x_train, x_test, y_train, y_test = tts(x, y, test_size=1 / 3)
     return x_train, x_test, y_train, y_test
 
 
 def calculate_loss(w, x_instance, y_instance):
     return max(0, (1 - y_instance * np.dot(w, x_instance)))
 
+
 def calculate_update_pa_ii(loss, x_instance, c):
     aggressiveness_parameter_term = 1 / 2 * c
     update_value = loss / (np.dot(x_instance, x_instance) + aggressiveness_parameter_term)
     return update_value
-
 
 
 def train_model(x, y, num_of_iterations):
@@ -77,10 +77,8 @@ def predict_category(w_1, w_2, w_10, x):
 x_train, x_test, y_train, y_test = load_data('./data/breast-cancer-wisconsin.data')
 w_1, w_2, w_10 = train_model(x_train.to_numpy(), y_train.to_numpy(), 10)
 
-
 y_test_predicted_1, y_test_predicted_2, y_test_predicted_10 = predict_category(w_1, w_2, w_10, x_test)
 y_train_predicted_1, y_train_predicted_2, y_train_predicted_10 = predict_category(w_1, w_2, w_10, x_train)
-
 
 print("testing accuracy on 1 iteration: " + str(accuracy_score(y_test.to_numpy(), y_test_predicted_1)) +
       " training accuracy on 1 iteration: " + str(accuracy_score(y_train.to_numpy(), y_train_predicted_1)))
