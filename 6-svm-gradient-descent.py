@@ -46,14 +46,14 @@ def train_model(x, y, num_of_iterations):
     # creating a weights vector with zeros
     weights_vector = np.zeros(x.shape[1])
     # define regularization strength and learning rate
-    c = 1000
+    c = 1500
+    learning_rate = 0.000001
     # used to check if the model is converged in every 2^n th iteration
     n = 0
     cost_threshold = 0.01
     # infinite number representation in python. This is used to compare the cost value with in the initial iteration
     # because we don't know what the cost would be in the first iteration
     prev_cost = float("inf")
-    learning_rate = 0.000001
     for iteration in range(0, num_of_iterations):
         for index, example_value in enumerate(x):
             # pass one example at a time (SDG)
@@ -76,12 +76,12 @@ weights = train_model(x_train.to_numpy(), y_train.to_numpy(), 5000)
 print(weights)
 
 # testing the model on test set
-y_test_predicted = np.array([])
+y_test_predicted = []
 
 for i in range(x_test.shape[0]):
-    yp = np.sign(np.dot(weights, x_test.to_numpy()[i]))
-    y_test_predicted = np.append(y_test_predicted, yp)
+    prediction = np.sign(np.dot(weights, x_test.to_numpy()[i]))
+    y_test_predicted.append(prediction)
 
-print("accuracy on test dataset: {}".format(accuracy_score(y_test.to_numpy(), y_test_predicted)))
-print("recall on test dataset: {}".format(recall_score(y_test.to_numpy(), y_test_predicted)))
-print("precision on test dataset: {}".format(recall_score(y_test.to_numpy(), y_test_predicted)))
+print("accuracy on test dataset: " + str(accuracy_score(y_test.to_numpy(), y_test_predicted)))
+print("recall on test dataset: " + str(recall_score(y_test.to_numpy(), y_test_predicted)))
+print("precision on test dataset: " + str(recall_score(y_test.to_numpy(), y_test_predicted)))
