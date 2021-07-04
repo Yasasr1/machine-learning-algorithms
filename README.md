@@ -8,3 +8,4 @@ This repository contains implementations of the following machine learning algor
 - ID3
 - Self organizing maps (SOM)
 - Convolutional neural network
+- Principal component analysis(PCA)
