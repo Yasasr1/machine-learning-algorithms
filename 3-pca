@@ -1,8 +1,37 @@
 2. Write answers to the following questions
     a. What is PCA?
 
+    Principal components are new features that are created from a linear combination of existing features.
+    These principal components are uncorrelated with each other.
+
+    principal component analysis(PCA) is a method to calculate and identify the principal components of a
+    dataset and use them to reduce the number of dimensions in the dataset.
+
 
     b. How can we use PCA for dimensionality reduction and visualize the classes?
 
+    We can reduce the number of dimensions in the dataset by choosing the first n principal
+    components such that:
+     n < number of initial dimensions in the dataset.
+    To do this successfully first we need to identify how well each principal component describe the data set and then
+    we can choose the n principal components that best describe the dataset. process of identifying these principal
+    components is described below
+
+    1. First we need to normalize the dataset
+    2. Then we need to calculate the covariance matrix or the correlation matrix for the normalized dataset
+    2. We can then identify eigenvectors and eigenvalues from this matrix
+    3. These eigenvectors are unit vectors which describe our principal components
+    4. Next step is to choose the best n principal components that best describe the dataset. For this we can
+       calculate the explained variance ratio for each principal component. We want the first n principal components
+       that has the highest explained variance ratios
+    5. Then we can convert the dataset to a new basis which is described by our chosen n principal components. This
+       will reduce the number of dimensions of the dataset because n < number of initial dimensions in the dataset
+    6. then we can visualize the dataset in terms of the new dimensions
+
 
     c. Why do we need to normalize data before feeding it to any machine learning algorithm?
+
+        The purpose of normalizing a dataset is to make sure all features in the dataset have values
+        in a common scale. For example if one feature has values ranging from 0 to 1 and another
+        feature has values ranging from 10000 - 10000000 this will be problematic when you try to
+        combine them and learn a model.
