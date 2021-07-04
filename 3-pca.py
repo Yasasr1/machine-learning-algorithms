@@ -23,8 +23,8 @@ def load_data(data_file_path):
 
 
 def create_covariance_matrix(x):
-    covarince_matrix = np.cov(x.T)
-    return covarince_matrix
+    covariance_matrix = np.cov(x.T)
+    return covariance_matrix
 
 
 def pca(covariance_matrix, x, y):
