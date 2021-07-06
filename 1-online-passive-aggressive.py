@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split as tts
 from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import MinMaxScaler
 
 
 def load_data(data_file_path):
@@ -17,6 +18,10 @@ def load_data(data_file_path):
     # add all outputs vector Y
     x = data.iloc[:, 0:9]
     y = data.loc[:, "class"]
+
+    # normalize data
+    x_normalized = MinMaxScaler().fit_transform(x.values)
+    x = pd.DataFrame(x_normalized)
 
     # add 1 as b(intercept) value for every Xi'th row
     x.insert(loc=len(x.columns), column='b', value=1)
