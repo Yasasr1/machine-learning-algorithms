@@ -2,11 +2,11 @@ import six
 import sys
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn import svm
 from sklearn.model_selection import train_test_split as tts
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import classification_report
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, plot_roc_curve
 from keras.datasets import cifar10
 sys.modules['sklearn.externals.six'] = six
 from id3 import Id3Estimator
@@ -53,6 +53,10 @@ def run_id3_cifar(x_train, y_train, x_test, y_test):
     print("ID3 with CIFAR-10 dataset")
     print("Testing accuracy:", accuracy_score(y_test, y_pred_test))
     print("Training accuracy:", accuracy_score(y_train, y_pred_train))
+    print("Confusion matrix:\n", confusion_matrix(y_test, y_pred_test))
+    print(classification_report(y_test, y_pred_test))
+    plot_roc_curve(clf, x_test, y_pred_test)
+    plt.show()
 
 
 def run_id3_breast_cancer(x_train, x_test, y_train, y_test):
@@ -64,6 +68,10 @@ def run_id3_breast_cancer(x_train, x_test, y_train, y_test):
     print("ID3 with breast cancer dataset")
     print("Testing accuracy:", accuracy_score(y_test, y_pred_test))
     print("Training accuracy:", accuracy_score(y_train, y_pred_train))
+    print("Confusion matrix:\n", confusion_matrix(y_test, y_pred_test))
+    print(classification_report(y_test, y_pred_test))
+    # plot_roc_curve(clf, x_test, y_pred_test)
+    plt.show()
 
 
 def run_svm_id3(x_train, y_train, x_test, y_test):
@@ -82,6 +90,10 @@ def run_svm_id3(x_train, y_train, x_test, y_test):
     print("Linear SVM with ID3 dataset")
     print("Testing accuracy:", accuracy_score(y_test, y_pred_test))
     print("Training accuracy:", accuracy_score(y_train, y_pred_train))
+    print("Confusion matrix:\n", confusion_matrix(y_test, y_pred_test))
+    print(classification_report(y_test, y_pred_test))
+    plot_roc_curve(clf, x_test, y_pred_test)
+    plt.show()
 
 
 def run_svm_breast_cancer(x_train, x_test, y_train, y_test):
@@ -94,14 +106,19 @@ def run_svm_breast_cancer(x_train, x_test, y_train, y_test):
     print("Linear SVM with breast cancer dataset")
     print("Testing accuracy:", accuracy_score(y_test, y_pred_test))
     print("Training accuracy:", accuracy_score(y_train, y_pred_train))
+    print("Confusion matrix:\n", confusion_matrix(y_test, y_pred_test))
+    print(classification_report(y_test, y_pred_test))
+    plot_roc_curve(clf, x_test, y_pred_test)
+    plt.show()
 
 
 # load data
 (xTrain, yTrain), (xTest, yTest) = cifar10.load_data()
 x_train_bc, x_test_bc, y_train_bc, y_test_bc = load_data('./data/breast-cancer-wisconsin.data')
 
+# in binary classification, recall of the positive class is also known as “sensitivity”; recall of the negative class is “specificity”
 # run algorithms
-run_id3_cifar(xTrain, yTrain, xTest, yTest)
+# run_id3_cifar(xTrain, yTrain, xTest, yTest)
 # run_id3_breast_cancer(x_train_bc, x_test_bc, y_train_bc, y_test_bc)
-# run_svm_id3(xTrain, yTrain, xTest, yTest)
-# run_svm_breast_cancer(x_train_bc, x_test_bc, y_train_bc, y_test_bc)
+run_svm_id3(xTrain, yTrain, xTest, yTest)
+run_svm_breast_cancer(x_train_bc, x_test_bc, y_train_bc, y_test_bc)

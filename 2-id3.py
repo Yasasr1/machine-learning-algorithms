@@ -1,8 +1,10 @@
 import numpy as np
 import pandas as pd
 import pprint
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split as tts
-from sklearn.metrics import accuracy_score, recall_score
+from sklearn.metrics import accuracy_score, recall_score, plot_roc_curve
+
 from sklearn.preprocessing import MinMaxScaler
 from keras.datasets import cifar10
 
@@ -127,43 +129,45 @@ def id3_predict(x, tree):
     return predictions
 
 
-# x_train, x_test, y_train, y_test = load_data_breast_cancer('./data/breast-cancer-wisconsin.data')
-# pd.options.mode.chained_assignment = None
-# x_train['class'] = y_train
-# id3_tree = build_tree(x_train)
-# pprint.pprint(id3_tree)
-# y_predictions = id3_predict(x_test, id3_tree)
-# print("accuracy on test dataset: " + str(accuracy_score(y_test.to_numpy(), y_predictions)))
+x_train, x_test, y_train, y_test = load_data_breast_cancer('./data/breast-cancer-wisconsin.data')
+pd.options.mode.chained_assignment = None
+x_train['class'] = y_train
+id3_tree = build_tree(x_train)
+pprint.pprint(id3_tree)
+y_predictions = id3_predict(x_test, id3_tree)
+print("accuracy on test dataset: " + str(accuracy_score(y_test.to_numpy(), y_predictions)))
+# plot_roc_curve(id3_tree, x_test, y_predictions)
+# plt.show()
 
 
 # (trainX, trainy), (testX, testy) = cifar10.load_data()
 # df = pd.DataFrame(list(zip(trainX, trainy)), columns =['Image', 'label'])
 # print(df.Image)
 
-
-
-(xTrain, yTrain), (xTest, yTest) = cifar10.load_data()
-xVal = xTrain[49000:, :].astype(np.float)
-yVal = np.squeeze(yTrain[49000:, :])
-xTrain = xTrain[:49000, :].astype(np.float)
-yTrain = np.squeeze(yTrain[:49000, :])
-yTest = np.squeeze(yTest)
-xTest = xTest.astype(np.float)
-
-# Pre processing data
-# Normalize the data by subtract the mean image
-meanImage = np.mean(xTrain, axis=0)
-xTrain -= meanImage
-xVal -= meanImage
-xTest -= meanImage
-
-# Reshape data from channel to rows
-xTrain = np.reshape(xTrain, (xTrain.shape[0], -1))
-xVal = np.reshape(xVal, (xVal.shape[0], -1))
-xTest = np.reshape(xTest, (xTest.shape[0], -1))
-
-# Add bias dimension columns
-xTrain = np.hstack([xTrain, np.ones((xTrain.shape[0], 1))])
-xVal = np.hstack([xVal, np.ones((xVal.shape[0], 1))])
-xTest = np.hstack([xTest, np.ones((xTest.shape[0], 1))])
-print(xTrain)
+#
+#
+# (xTrain, yTrain), (xTest, yTest) = cifar10.load_data()
+# xVal = xTrain[49000:, :].astype(np.float)
+# yVal = np.squeeze(yTrain[49000:, :])
+# xTrain = xTrain[:49000, :].astype(np.float)
+# yTrain = np.squeeze(yTrain[:49000, :])
+# yTest = np.squeeze(yTest)
+# xTest = xTest.astype(np.float)
+#
+# # Pre processing data
+# # Normalize the data by subtract the mean image
+# meanImage = np.mean(xTrain, axis=0)
+# xTrain -= meanImage
+# xVal -= meanImage
+# xTest -= meanImage
+#
+# # Reshape data from channel to rows
+# xTrain = np.reshape(xTrain, (xTrain.shape[0], -1))
+# xVal = np.reshape(xVal, (xVal.shape[0], -1))
+# xTest = np.reshape(xTest, (xTest.shape[0], -1))
+#
+# # Add bias dimension columns
+# xTrain = np.hstack([xTrain, np.ones((xTrain.shape[0], 1))])
+# xVal = np.hstack([xVal, np.ones((xVal.shape[0], 1))])
+# xTest = np.hstack([xTest, np.ones((xTest.shape[0], 1))])
+# print(xTrain)
