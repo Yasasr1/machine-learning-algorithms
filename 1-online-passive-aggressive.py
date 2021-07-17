@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split as tts
 from sklearn.metrics import accuracy_score
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 
 def load_data(data_file_path):
@@ -20,7 +20,7 @@ def load_data(data_file_path):
     y = data.loc[:, "class"]
 
     # normalize data
-    x_normalized = MinMaxScaler().fit_transform(x.values)
+    x_normalized = StandardScaler().fit_transform(x.values)
     x = pd.DataFrame(x_normalized)
 
     # add 1 as b(intercept) value for every Xi'th row
@@ -34,14 +34,19 @@ def calculate_loss(w, x_instance, y_instance):
     return max(0, (1 - y_instance * np.dot(w, x_instance)))
 
 
-def calculate_update_pa_ii(loss, x_instance, c):
-    aggressiveness_parameter_term = 1 / 2 * c
-    update_value = loss / (np.dot(x_instance, x_instance) + aggressiveness_parameter_term)
-    return update_value
+def calculate_update(loss, x_instance, c, tau):
+    if tau == 1:
+        return loss / np.dot(x_instance, x_instance)
+    elif tau == 2:
+        return min(c, loss / np.dot(x_instance, x_instance))
+    else:
+        aggressiveness_parameter_term = 1 / 2 * c
+        update_value = loss / (np.dot(x_instance, x_instance) + aggressiveness_parameter_term)
+        return update_value
 
 
-def train_model(x, y, num_of_iterations):
-    # create a weigth vector
+def train_model(x, y, num_of_iterations, tau):
+    # create a weight vector
     w = np.zeros(x.shape[1])
     w_1 = np.zeros(x.shape[1])
     w_2 = np.zeros(x.shape[1])
@@ -53,7 +58,7 @@ def train_model(x, y, num_of_iterations):
         for index, example_value in enumerate(x):
             # pass one example at a time to train the model
             loss = calculate_loss(w, example_value, y[index])
-            update = calculate_update_pa_ii(loss, example_value, c)
+            update = calculate_update(loss, example_value, c, tau)
             w = w + (update * y[index] * example_value)
 
         if iteration == 1:
@@ -80,7 +85,7 @@ def predict_category(w_1, w_2, w_10, x):
 
 
 x_train, x_test, y_train, y_test = load_data('./data/breast-cancer-wisconsin.data')
-w_1, w_2, w_10 = train_model(x_train.to_numpy(), y_train.to_numpy(), 10)
+w_1, w_2, w_10 = train_model(x_train.to_numpy(), y_train.to_numpy(), 10, 3)
 
 y_test_predicted_1, y_test_predicted_2, y_test_predicted_10 = predict_category(w_1, w_2, w_10, x_test)
 y_train_predicted_1, y_train_predicted_2, y_train_predicted_10 = predict_category(w_1, w_2, w_10, x_train)
