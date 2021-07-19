@@ -36,19 +36,18 @@ def pca(covariance_matrix, x, y):
     for index in range(len(eigenvalues)):
         explained_variances.append(eigenvalues[index] / eigenvalues_sum)
 
-    # print(explained_variances)
-    # first 2 elements of the explained_variances list have highest values
+    print(explained_variances)
+
     pc1 = x.dot(eigenvectors.T[0])
     pc2 = x.dot(eigenvectors.T[1])
 
     df = pd.DataFrame(pc1, columns=["PC1"])
     df["PC2"] = pc2
     df['y'] = y
-    print(df['y'])
     sns.scatterplot(data=df, x="PC1", y="PC2", hue="y")
     plt.show()
 
 
 x, y = load_data('./data/breast-cancer-wisconsin.data')
 cov_matrix = create_covariance_matrix(x)
-pca(cov_matrix, 2, x, y)
+pca(cov_matrix, x, y)
