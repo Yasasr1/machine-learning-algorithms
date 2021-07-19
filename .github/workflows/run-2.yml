@@ -28,6 +28,7 @@ jobs:
          pip3 install tensorflow
          pip3 uninstall keras
          pip3 install sklearn
+         pip3 install decision-tree-id3
       
       - name: Run script
         run: python3 2-id3-svm-lib.py
