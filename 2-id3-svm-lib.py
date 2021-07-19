@@ -36,8 +36,13 @@ def load_data(data_file_path):
 
 
 def run_id3_cifar(x_train, y_train, x_test, y_test):
-    x_train = x_train[:20000, :].astype(float)
-    y_train = np.squeeze(y_train[:20000, :])
+    # x_train = x_train[:20000, :].astype(float)
+    # y_train = np.squeeze(y_train[:20000, :])
+    
+    x_train = x_train.astype(float)
+    y_train = np.squeeze(y_train)
+    
+    
     y_test = np.squeeze(y_test)
     x_test = x_test.astype(float)
     x_train = np.reshape(x_train, (x_train.shape[0], -1))
