@@ -7,7 +7,7 @@ from sklearn import svm
 from sklearn.model_selection import train_test_split as tts
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report, plot_roc_curve
-from keras.datasets import cifar10
+from tensorflow.keras.datasets import cifar10
 sys.modules['sklearn.externals.six'] = six
 from id3 import Id3Estimator
 
