@@ -84,6 +84,17 @@ def predict_category(w_1, w_2, w_10, x):
     return y_predicted_1, y_predicted_2, y_predicted_10
 
 
+def get_prediction_counts(y):
+    benign_count = 0
+    malignant_count = 0;
+    for value in y:
+        if value == -1:
+            benign_count += 1
+        elif value == 1:
+            malignant_count += 1
+
+    return benign_count, malignant_count
+
 x_train, x_test, y_train, y_test = load_data('./data/breast-cancer-wisconsin.data')
 w_1, w_2, w_10 = train_model(x_train.to_numpy(), y_train.to_numpy(), 10, 3)
 
@@ -98,3 +109,18 @@ print("accuracy on 2 iterations: " + str(accuracy_score(y_test.to_numpy(), y_tes
 
 print("accuracy on 10 iterations: " + str(accuracy_score(y_test.to_numpy(), y_test_predicted_10)) +
       " training accuracy on 10 iteration: " + str(accuracy_score(y_train.to_numpy(), y_train_predicted_10)))
+
+be, mal = get_prediction_counts(y_test_predicted_1)
+print("1 iteration\n##############")
+print("Benign: " + str(be))
+print("Malignant: " + str(mal) + "\n")
+
+be, mal = get_prediction_counts(y_test_predicted_2)
+print("2 iterations\n##############\n")
+print("Benign: " + str(be))
+print("Malignant: " + str(mal) + "\n")
+
+be, mal = get_prediction_counts(y_test_predicted_10)
+print("10 iterations\n##############\n")
+print("Benign: " + str(be))
+print("Malignant: " + str(mal))

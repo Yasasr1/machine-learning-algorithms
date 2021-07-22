@@ -61,7 +61,7 @@ def train_model(x, y, num_of_iterations):
     prev_cost = float("inf")
     for iteration in range(0, num_of_iterations):
         for index, example_value in enumerate(x):
-            # pass one example at a time (SDG)
+            # pass one example at a time (Stochastic Gradient Descent )
             ascent = calculate_gradient(weights_vector, example_value, y[index], c)
             weights_vector = weights_vector - (learning_rate * ascent)
 
@@ -74,6 +74,18 @@ def train_model(x, y, num_of_iterations):
             n += 1
 
     return weights_vector
+
+
+def get_prediction_counts(y):
+    benign_count = 0
+    malignant_count = 0;
+    for value in y:
+        if value == -1:
+            benign_count += 1
+        elif value == 1:
+            malignant_count += 1
+
+    return benign_count, malignant_count
 
 
 x_train, x_test, y_train, y_test = load_data('./data/breast-cancer-wisconsin.data')
@@ -90,3 +102,8 @@ for i in range(x_test.shape[0]):
 print("accuracy on test dataset: " + str(accuracy_score(y_test.to_numpy(), y_test_predicted)))
 print("recall on test dataset: " + str(recall_score(y_test.to_numpy(), y_test_predicted)))
 print("precision on test dataset: " + str(recall_score(y_test.to_numpy(), y_test_predicted)))
+
+be, mal = get_prediction_counts(y_test_predicted)
+print("Predictions")
+print("Benign: " + str(be))
+print("Malignant: " + str(mal))
